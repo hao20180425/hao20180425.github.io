@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="JVM的内存结构​    根据 JVM 规范，JVM 内存共分为虚拟机栈、堆、方法区、程序计数器、本地方法栈五个部分。 1. Java虚拟机栈：线程私有；每个方法在执行的时候会创建一个栈帧，存储了局部变量表，操作数栈，动态连接，方法返回地址等；每个方法从调用到执行完毕，对应一个栈帧在虚拟机栈中的入栈和出栈。 2. 堆：线程共享；被所有线程共享的一块内存区域，在虚拟机启动时创建，用于存放对象实例。">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试整合">
+<meta property="og:url" content="http://yoursite.com/2019/07/15/面试整合/index.html">
+<meta property="og:site_name" content="R-博客">
+<meta property="og:description" content="JVM的内存结构​    根据 JVM 规范，JVM 内存共分为虚拟机栈、堆、方法区、程序计数器、本地方法栈五个部分。 1. Java虚拟机栈：线程私有；每个方法在执行的时候会创建一个栈帧，存储了局部变量表，操作数栈，动态连接，方法返回地址等；每个方法从调用到执行完毕，对应一个栈帧在虚拟机栈中的入栈和出栈。 2. 堆：线程共享；被所有线程共享的一块内存区域，在虚拟机启动时创建，用于存放对象实例。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-15T09:25:33.203Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试整合">
+<meta name="twitter:description" content="JVM的内存结构​    根据 JVM 规范，JVM 内存共分为虚拟机栈、堆、方法区、程序计数器、本地方法栈五个部分。 1. Java虚拟机栈：线程私有；每个方法在执行的时候会创建一个栈帧，存储了局部变量表，操作数栈，动态连接，方法返回地址等；每个方法从调用到执行完毕，对应一个栈帧在虚拟机栈中的入栈和出栈。 2. 堆：线程共享；被所有线程共享的一块内存区域，在虚拟机启动时创建，用于存放对象实例。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/15/面试整合/">
+
+
+
+
+
+  <title>面试整合 | R-博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+	<a href="https://github.com/hao20180425" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">R-博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/15/面试整合/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rzh">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/icon.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="R-博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试整合</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-15T16:29:31+08:00">
+                2019-07-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/面试/" itemprop="url" rel="index">
+                    <span itemprop="name">面试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="JVM的内存结构"><a href="#JVM的内存结构" class="headerlink" title="JVM的内存结构"></a>JVM的内存结构</h2><p>​    根据 JVM 规范，JVM 内存共分为虚拟机栈、堆、方法区、程序计数器、本地方法栈五个部分。</p>
+<p><strong>1. Java虚拟机栈：</strong>线程私有；每个方法在执行的时候会创建一个栈帧，存储了局部变量表，操作数栈，动态连接，方法返回地址等；每个方法从调用到执行完毕，对应一个栈帧在虚拟机栈中的入栈和出栈。</p>
+<p><strong>2. 堆：</strong>线程共享；被所有线程共享的一块内存区域，在虚拟机启动时创建，用于存放对象实例。</p>
+<p><strong>3. 方法区：</strong>线程共享；被所有线程共享的一块内存区域；用于存储已被虚拟机加载的类信息，常量，静态变量等。</p>
+<p><strong>4. 程序计数器：</strong>线程私有；是当前线程所执行的字节码的行号指示器，每条线程都要有一个独立的程序计数器，这类内存也称为“线程私有”的内存。</p>
+<p><strong>5. 本地方法栈：</strong>线程私有；主要为虚拟机使用到的Native方法服务。</p>
+<h2 id="启动线程是start-还是run-？为什么"><a href="#启动线程是start-还是run-？为什么" class="headerlink" title="启动线程是start()还是run()？为什么?"></a>启动线程是start()还是run()？为什么?</h2><p><strong>start();</strong></p>
+<p>​    当用start()开始一个线程后，线程就进入就绪状态，使线程所代表的虚拟处理机处于可运行状态，这意味着它可以由JVM调度并执行。但是这并不意味着线程就会立即运行。只有当cpu分配时间片时，这个线程获得时间片时，才开始执行run()方法。start()是方法，它调用run()方法.而run()方法是你必须重写的. run()方法中包含的是线程的主体(真正的逻辑)。</p>
+<h3 id="继承Thread类的启动方式"><a href="#继承Thread类的启动方式" class="headerlink" title="继承Thread类的启动方式"></a>继承Thread类的启动方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        MyThread t =<span class="keyword">new</span> MyThread();</span><br><span class="line">        t.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyThread</span> <span class="keyword">extends</span> <span class="title">Thread</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello World!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现Runnable接口的启动方式"><a href="#实现Runnable接口的启动方式" class="headerlink" title="实现Runnable接口的启动方式"></a>实现Runnable接口的启动方式</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread t =<span class="keyword">new</span> Thread(<span class="keyword">new</span> MyRunnable());</span><br><span class="line">        t.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyRunnable</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">         <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello World!"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    实际上这两种启动线程的方式原理是一样的。首先都是调用本地方法启动一个线程，其次是在这个线程里执行目标对象的run()方法。那么这个目标对象是什么呢？为了弄明白这个问题，我们来看看Thread类的run()方法的实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (target != <span class="keyword">null</span>) &#123;</span><br><span class="line">        target.run();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    当我们采用实现Runnable接口的方式来实现线程的情况下，在调用new Thread(Runnable target)构造器时，将实现Runnable接口的类的实例设置成了线程要执行的主体所属的目标对象target，当线程启动时，这个实例的 run()方法就被执行了。</p>
+<p>​    当我们采用继承Thread的方式实现线程时，线程的这个run()方法被重写了，所以当线程启动时，执行的是这个对象自身的 run()方法。</p>
+<p><strong>总结起来</strong>：如果我们采用的是继承Thread类的方式，那么这个target就是线程对象自身，如果我们采用的是实现Runnable接口的方式，那么这个target就是实现了Runnable接口的类的实例。</p>
+<p>我们再来看一道混迹于各大面试公司笔试的题目：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">EqualsTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        Thread t = <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                pong();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        ;</span><br><span class="line">        t.run();</span><br><span class="line">        System.out.print(<span class="string">"ping"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">pong</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.print(<span class="string">"pong"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>pongping</strong></p>
+<p>​    这里直接调用线程的run方法，就相当于调用普通方法一样，由上往下执行，所以最后的结果是pongping。但是如果上面改成t.start()之后，这个结果就不固定了，因为这里有两个线程(其实还有一个守护线程，这里就先忽略)，main线程和 t 线程，这两个线程获得cpu的时间就会不固定了，谁先获得CPU执行权，谁就先打印结果，所以最后的结果可能pongping也可能是pingpong。</p>
+<h2 id="spring中Bean的作用域"><a href="#spring中Bean的作用域" class="headerlink" title="spring中Bean的作用域"></a>spring中Bean的作用域</h2><p><strong>1. singleton：</strong>Spring IoC容器中只会存在一个共享的Bean实例，无论有多少个Bean引用它，始终指向同一对象。Singleton作用域是Spring中的缺省作用域。</p>
+<p><strong>2. prototype：</strong>每次通过Spring容器获取prototype定义的bean时，容器都将创建一个新的Bean实例，每个Bean实例都有自己的属性和状态，而singleton全局只有一个对象。</p>
+<p><strong>3. request：</strong>在一次Http请求中，容器会返回该Bean的同一实例。而对不同的Http请求则会产生新的Bean，而且该bean仅在当前Http Request内有效。</p>
+<p><strong>4. session：</strong>在一次Http Session中，容器会返回该Bean的同一实例。而对不同的Session请求则会创建新的实例，该bean实例仅在当前Session内有效。</p>
+<p><strong>5. global Session：</strong>在一个全局的Http Session中，容器会返回该Bean的同一个实例，仅在使用portlet context时有效。</p>
+<h2 id="Spring框架中都用到了哪些设计模式？"><a href="#Spring框架中都用到了哪些设计模式？" class="headerlink" title="Spring框架中都用到了哪些设计模式？"></a>Spring框架中都用到了哪些设计模式？</h2><p><strong>1. 代理模式：</strong>在AOP和remoting中被用的比较多。</p>
+<p><strong>2. 单例模式：</strong>在spring配置文件中定义的bean默认为单例模式。</p>
+<p><strong>3. 模板方法模式：</strong>用来解决代码重复的问题。</p>
+<p><strong>4. 前端控制器模式：</strong>Spring提供了DispatcherServlet来对请求进行分发。</p>
+<p><strong>5. 依赖注入模式：</strong>贯穿于BeanFactory / ApplicationContext接口的核心理念。</p>
+<p><strong>6. 工厂模式：</strong>BeanFactory用来创建对象的实例。</p>
+<h2 id="springmvc的核心是什么，请求的流程是怎么处理的，控制反转怎么实现的"><a href="#springmvc的核心是什么，请求的流程是怎么处理的，控制反转怎么实现的" class="headerlink" title="springmvc的核心是什么，请求的流程是怎么处理的，控制反转怎么实现的"></a>springmvc的核心是什么，请求的流程是怎么处理的，控制反转怎么实现的</h2><p><strong>核心：</strong>控制反转和面向切面</p>
+<p><strong>请求处理流程：</strong></p>
+<ol>
+<li>首先用户发送请求到前端控制器，前端控制器根据请求信息（如URL）来决定选择哪一个页面控制器进行处理并把请求委托给它，即以前的控制器的控制逻辑部分；</li>
+<li>页面控制器接收到请求后，进行功能处理，首先需要收集和绑定请求参数到一个对象，并进行验证，然后将命令对象委托给业务对象进行处理；处理完毕后返回一个ModelAndView（模型数据和逻辑视图名）；</li>
+<li>前端控制器收回控制权，然后根据返回的逻辑视图名，选择相应的视图进行渲染，并把模型数据传入以便视图渲染；</li>
+<li>前端控制器再次收回控制权，将响应返回给用户。</li>
+</ol>
+<p><strong>控制反转如何实现：</strong></p>
+<ul>
+<li>我们每次使用spring框架都要配置xml文件，这个xml配置了bean的id和class。</li>
+<li>spring中默认的bean为单实例模式，通过bean的class引用反射机制可以创建这个实例。</li>
+<li>因此，spring框架通过反射替我们创建好了实例并且替我们维护他们。</li>
+<li>A需要引用B类，spring框架就会通过xml把B实例的引用传给了A的成员变量。</li>
+</ul>
+<h2 id="msyql优化经验"><a href="#msyql优化经验" class="headerlink" title="msyql优化经验"></a>msyql优化经验</h2><ul>
+<li>对查询进行优化，应尽量避免全表扫描，首先应考虑在 where 及 order by 涉及的列上建立索引。</li>
+<li>应尽量避免在 where 子句中使用!=或&lt;&gt;操作符，否则引擎将放弃使用索引而进行全表扫描。</li>
+<li>尽量使用数字型字段，若只含数值信息的字段尽量不要设计为字符型，这会降低查询和连接的性能，并会增加存储开销。这是因为引擎在处理查询和连接时会逐个比较字符串中每一个字符，而对于数字型而言只需要比较一次就够了。</li>
+<li>任何地方都不要使用 select * from t ，用具体的字段列表代替“*”，不要返回用不到的任何字段。</li>
+<li>避免频繁创建和删除临时表，以减少系统表资源的消耗。诸如此类，等等等等……</li>
+</ul>
+<h2 id="为什么要用线程池"><a href="#为什么要用线程池" class="headerlink" title="为什么要用线程池"></a>为什么要用线程池</h2><p><strong>那先要明白什么是线程池</strong></p>
+<p>线程池是指在初始化一个多线程应用程序过程中创建一个线程集合，然后在需要执行新的任务时重用这些线程而不是新建一个线程。</p>
+<p><strong>使用线程池的好处</strong></p>
+<ol>
+<li>线程池改进了一个应用程序的响应时间。由于线程池中的线程已经准备好且等待被分配任务，应用程序可以直接拿来使用而不用新建一个线程。</li>
+<li>线程池节省了CLR 为每个短生存周期任务创建一个完整的线程的开销并可以在任务完成后回收资源。</li>
+<li>线程池根据当前在系统中运行的进程来优化线程时间片。</li>
+<li>线程池允许我们开启多个任务而不用为每个线程设置属性。</li>
+<li>线程池允许我们为正在执行的任务的程序参数传递一个包含状态信息的对象引用。</li>
+<li>线程池可以用来解决处理一个特定请求最大线程数量限制问题。</li>
+</ol>
+<h2 id="过滤器、监听器、拦截器的区别"><a href="#过滤器、监听器、拦截器的区别" class="headerlink" title="过滤器、监听器、拦截器的区别"></a>过滤器、监听器、拦截器的区别</h2><h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><blockquote>
+<p>Servlet中的过滤器Filter是实现了javax.servlet.Filter接口的服务器端程序，主要的用途是过滤字符编码、做一些业务逻辑判断等。其工作原理是，只要你在web.xml文件配置好要拦截的客户端请求，它都会帮你拦截到请求，此时你就可以对请求或响应(Request、Response)统一设置编码，简化操作；同时还可以进行逻辑判断，如用户是否已经登录、有没有权限访问该页面等等工作，它是随你的web应用启动而启动的，只初始化一次，以后就可以拦截相关的请求，只有当你的web应用停止或重新部署的时候才能销毁。</p>
+</blockquote>
+<p>在javax.servlet.Filter接口中定义了3个方法：</p>
+<p> void init(FilterConfig filterConfig) 用于完成过滤器的初始化</p>
+<p> void destroy() 用于过滤器销毁前，完成某些资源的回收</p>
+<p> void doFilter(ServletRequest request, ServletResponse response,FilterChain chain) 实现过滤功能，该方法对每个请求增加额外的处理</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.cn.util;  </span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> java.io.IOException;  </span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> javax.servlet.Filter;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterChain;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.FilterConfig;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletException;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletRequest;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletResponse;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;  </span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">FilterUtil</span> <span class="keyword">implements</span> <span class="title">Filter</span></span>&#123;  </span><br><span class="line"> </span><br><span class="line"> <span class="meta">@SuppressWarnings</span>(<span class="string">"unused"</span>)  </span><br><span class="line"> <span class="keyword">private</span> FilterConfig filterConfig;  </span><br><span class="line"> <span class="meta">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(FilterConfig filterConfig)</span> <span class="keyword">throws</span> ServletException </span>&#123;  </span><br><span class="line"> <span class="keyword">this</span>.filterConfig = filterConfig;  </span><br><span class="line">        System.out.println(<span class="string">"过滤器Filter初始化"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line"> </span><br><span class="line"> <span class="meta">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">doFilter</span><span class="params">(ServletRequest request, ServletResponse response,  </span></span></span><br><span class="line"><span class="function"><span class="params">            FilterChain chain)</span> <span class="keyword">throws</span> IOException, ServletException </span>&#123;  </span><br><span class="line"> <span class="keyword">if</span> (!(request <span class="keyword">instanceof</span> HttpServletRequest) || !(response <span class="keyword">instanceof</span> HttpServletResponse)) &#123;  </span><br><span class="line"> <span class="keyword">throw</span> <span class="keyword">new</span> ServletException(<span class="string">"FilterUtil just supports HTTP requests"</span>);  </span><br><span class="line">        &#125;  </span><br><span class="line">        HttpServletRequest httpRequest = (HttpServletRequest) request;  </span><br><span class="line">        HttpServletResponse httpResponse = (HttpServletResponse) response;  </span><br><span class="line">        httpRequest.setCharacterEncoding(<span class="keyword">this</span>.filterConfig.getInitParameter(<span class="string">"encoding"</span>));  </span><br><span class="line">        httpResponse.setCharacterEncoding(<span class="keyword">this</span>.filterConfig.getInitParameter(<span class="string">"encoding"</span>));  </span><br><span class="line">        chain.doFilter(httpRequest, httpResponse);  </span><br><span class="line">    &#125;  </span><br><span class="line"> </span><br><span class="line"> <span class="meta">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">destroy</span><span class="params">()</span> </span>&#123;  </span><br><span class="line">        System.out.println(<span class="string">"过滤器Filter销毁"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>web.xml配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span> </span><br><span class="line"> <span class="comment">&lt;!-- &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt; --&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>com.cn.util.FilterUtil<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">async-supported</span>&gt;</span>true<span class="tag">&lt;/<span class="name">async-supported</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">init-param</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>encoding<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>encodingFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span> </span><br><span class="line"> <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="监听器"><a href="#监听器" class="headerlink" title="监听器"></a>监听器</h3><blockquote>
+<p>Servlet的监听器Listener，它是实现了javax.servlet.ServletContextListener接口的服务器端程序，它也是随web应用的启动而启动，只初始化一次，随web应用的停止而销毁。主要作用是：做一些初始化的内容添加工作、设置一些基本的内容、比如一些参数或者是一些固定的对象等等。</p>
+</blockquote>
+<p>在javax.servlet.ServletContextListener接口中定义了2种方法：</p>
+<p>  void contextInitialized(ServletContextEvent sce) 监听器的初始化</p>
+<p>  void contextDestroyed(ServletContextEvent sce) 监听器销毁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.cn.util;  </span><br><span class="line"> </span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletContextEvent;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.ServletContextListener;  </span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServletContextListenerUtil</span> <span class="keyword">implements</span> <span class="title">ServletContextListener</span></span>&#123;  </span><br><span class="line"> </span><br><span class="line"> <span class="comment">//监听器的初始化 </span></span><br><span class="line"> <span class="meta">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextInitialized</span><span class="params">(ServletContextEvent sce)</span> </span>&#123;  </span><br><span class="line">        System.out.println(<span class="string">"监听器ServletContextListenerUtil初始化"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line"> </span><br><span class="line"> <span class="comment">//监听器销毁 </span></span><br><span class="line"> <span class="meta">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">contextDestroyed</span><span class="params">(ServletContextEvent sce)</span> </span>&#123;  </span><br><span class="line">        System.out.println(<span class="string">"监听器ServletContextListenerUtil销毁"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>项目启动时，先启动监听器，再启动过滤器。</p>
+<h3 id="拦截器"><a href="#拦截器" class="headerlink" title="拦截器"></a>拦截器</h3><blockquote>
+<p>拦截器是在面向切面编程中应用的，就是在你的service或者一个方法前调用一个方法，或者在方法后调用一个方法比如动态代理就是拦截器的简单实现，在你调用方法前打印出字符串（或者做其它业务逻辑的操作），也可以在你调用方法后打印出字符串，甚至在你抛出异常的时候做业务逻辑的操作。拦截器不是在web.xml配置的，比如struts在struts.xml配置，在springMVC在<strong>spring</strong>与springMVC整合的配置文件中配置。</p>
+</blockquote>
+<p>在springmvc中，定义拦截器要实现HandlerInterceptor接口，并实现该接口中提供的三个方法</p>
+<p><strong>preHandle方法：</strong>进入Handler方法之前执行。可以用于身份认证、身份授权。比如如果认证没有通过表示用户没有登陆，需要此方法拦截不再往下执行（return false），否则就放行（return true）。</p>
+<p><strong>postHandle方法：</strong>进入Handler方法之后，返回ModelAndView之前执行。可以看到该方法中有个modelAndView的形参。应用场景：从modelAndView出发：将公用的模型数据（比如菜单导航之类的）在这里传到视图，也可以在这里同一指定视图。</p>
+<p> <strong>afterCompletion方法：</strong>执行Handler完成之后执行。应用场景：统一异常处理，统一日志处理等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.cn.util;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletRequest;  </span><br><span class="line"><span class="keyword">import</span> javax.servlet.http.HttpServletResponse;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.HandlerInterceptor;  </span><br><span class="line"><span class="keyword">import</span> org.springframework.web.servlet.ModelAndView;  </span><br><span class="line"> </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InterceptorUtil</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span></span>&#123;  </span><br><span class="line"> </span><br><span class="line"> <span class="comment">//进入Handler方法之前执行 </span></span><br><span class="line"> <span class="comment">//可以用于身份认证、身份授权。如果认证没有通过表示用户没有登陆，需要此方法拦截不再往下执行，否则就放行 </span></span><br><span class="line"> <span class="meta">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request,  </span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;  </span><br><span class="line"> <span class="comment">// TODO Auto-generated method stub </span></span><br><span class="line">        System.out.println(<span class="string">"InterceptorUtil...........preHandle"</span>);  </span><br><span class="line">        String user= (String) request.getSession().getAttribute(<span class="string">"user"</span>);  </span><br><span class="line"> <span class="keyword">if</span>(user != <span class="keyword">null</span>)&#123;  </span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">true</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">        request.getRequestDispatcher(<span class="string">"/WEB-INF/jsp/index.jsp"</span>).forward(request, response);  </span><br><span class="line"> <span class="comment">//true表示放行，false表示不放行 </span></span><br><span class="line"> <span class="keyword">return</span> <span class="keyword">false</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line"> </span><br><span class="line"> <span class="meta">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postHandle</span><span class="params">(HttpServletRequest request,  </span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response, Object handler,  </span></span></span><br><span class="line"><span class="function"><span class="params">            ModelAndView modelAndView)</span> <span class="keyword">throws</span> Exception </span>&#123;  </span><br><span class="line"> <span class="comment">// TODO Auto-generated method stub </span></span><br><span class="line">        System.out.println(<span class="string">"InterceptorUtil...........postHandle"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line"> </span><br><span class="line"> <span class="meta">@Override</span> </span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request,  </span></span></span><br><span class="line"><span class="function"><span class="params">            HttpServletResponse response, Object handler, Exception ex)</span>  </span></span><br><span class="line"><span class="function"> <span class="keyword">throws</span> Exception </span>&#123;  </span><br><span class="line"> <span class="comment">// TODO Auto-generated method stub </span></span><br><span class="line">        System.out.println(<span class="string">"InterceptorUtil...........afterCompletion"</span>);  </span><br><span class="line">    &#125;  </span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>过滤器和拦截器的区别，基本都是以下一模一样的5行话。<br>1、拦截器是基于<strong>Java</strong>的反射机制的，而过滤器是基于函数回调<br>2、过滤器依赖与servlet容器，而拦截器不依赖与servlet容器<br>3、拦截器只能对action请求起作用，而过滤器则可以对几乎所有的请求起作用<br>4、拦截器可以访问action上下文、值栈里的对象，而过滤器不能<br>5、在action的生命周期中，拦截器可以多次被调用，而过滤器只能在容器初始化时被调用一次</p>
+</blockquote>
+<blockquote>
+<p>执行顺序：过滤前  - 拦截前 - Action处理 - 拦截后  -过滤后。个人认为过滤是一个横向的过程，首先把客户端提交的内容进行过滤(例如未登录用户不能访问内部页面的处理)；过滤通过后，拦截器将检查用户提交数据的验证，做一些前期的数据处理，接着把处理后的数据发给对应的Action；Action处理完成返回后，拦截器还可以做其他过程，再向上返回到过滤器的后续操作。</p>
+<p>过滤器（Filter）：当你有一堆东西的时候，你只希望选择符合你要求的某一些东西。定义这些要求的工具，就是过滤器。<br>拦截器（Interceptor）：在一个流程正在进行的时候，你希望干预它的进展，甚至终止它进行，这是拦截器做的事情。<br>监听器（Listener）：当一个事件发生的时候，你希望获得这个事件发生的详细信息，而并不想干预这个事件本身的进程，这就要用到监听器。</p>
+</blockquote>
+<p>使用原则</p>
+<blockquote>
+<p>对整个流程清楚之后，然后就是各自的使用，在使用之前应该有一个使用规则，为什么这个说，因为有些功能比如判断用户是否登录，既可以用过滤器，也可以用拦截器，用哪一个才是合理的呢？那么如果有一个原则，使用起来就会更加合理。实际上这个原则是有的：</p>
+<p>把整个项目的流程比作一条河，那么监听器的作用就是能够听到河流里的所有声音，过滤器就是能够过滤出其中的鱼，而拦截器则是拦截其中的部分鱼，并且作标记。所以当需要监听到项目中的一些信息，并且不需要对流程做更改时，用监听器；当需要过滤掉其中的部分信息，只留一部分时，就用过滤器；当需要对其流程进行更改，做相关的记录时用拦截器。下面是具体的使用案例</p>
+</blockquote>
+<h2 id="什么是线程死锁？死锁如何产生？如何避免线程死锁？"><a href="#什么是线程死锁？死锁如何产生？如何避免线程死锁？" class="headerlink" title="什么是线程死锁？死锁如何产生？如何避免线程死锁？"></a>什么是线程死锁？死锁如何产生？如何避免线程死锁？</h2><p><strong>死锁的介绍：</strong></p>
+<p>线程死锁是指由于两个或者多个线程互相持有对方所需要的资源，导致这些线程处于等待状态，无法前往执行。当线程进入对象的synchronized代码块时，便占有了资源，直到它退出该代码块或者调用wait方法，才释放资源，在此期间，其他线程将不能进入该代码块。当线程互相持有对方所需要的资源时，会互相等待对方释放资源，如果线程都不主动释放所占有的资源，将产生死锁。</p>
+<p><strong>死锁的产生的一些特定条件：</strong></p>
+<ol>
+<li>互斥条件：进程对于所分配到的资源具有排它性，即一个资源只能被一个进程占用，直到被该进程释放 。</li>
+<li>请求和保持条件：一个进程因请求被占用资源而发生阻塞时，对已获得的资源保持不放。</li>
+<li>不剥夺条件：任何一个资源在没被该进程释放之前，任何其他进程都无法对他剥夺占用。</li>
+<li>循环等待条件：当发生死锁时，所等待的进程必定会形成一个环路（类似于死循环），造成永久阻塞。</li>
+</ol>
+<p><strong>如何避免：</strong></p>
+<p><strong>1. 加锁顺序：</strong>当多个线程需要相同的一些锁，但是按照不同的顺序加锁，死锁就很容易发生。如果能确保所有的线程都是按照相同的顺序获得锁，那么死锁就不会发生。当然这种方式需要你事先知道所有可能会用到的锁，然而总有些时候是无法预知的。</p>
+<p><strong>2. 加锁时限：</strong>加上一个超时时间，若一个线程没有在给定的时限内成功获得所有需要的锁，则会进行回退并释放所有已经获得的锁，然后等待一段随机的时间再重试。但是如果有非常多的线程同一时间去竞争同一批资源，就算有超时和回退机制，还是可能会导致这些线程重复地尝试但却始终得不到锁。</p>
+<p><strong>3. 死锁检测：</strong>死锁检测即每当一个线程获得了锁，会在线程和锁相关的数据结构中（map、graph等等）将其记下。除此之外，每当有线程请求锁，也需要记录在这个数据结构中。死锁检测是一个更好的死锁预防机制，它主要是针对那些不可能实现按序加锁并且锁超时也不可行的场景。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="Rzh 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/15/JavaSE/" rel="next" title="JavaSE">
+                <i class="fa fa-chevron-left"></i> JavaSE
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/15/高效/" rel="prev" title="高效">
+                高效 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/icon.jpg" alt="Rzh">
+            
+              <p class="site-author-name" itemprop="name">Rzh</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://theme-next.iissnan.com/getting-started.html" title="Next教程" target="_blank">Next教程</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://mijisou.com/" title="秘迹搜" target="_blank">秘迹搜</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.okzyw.com/" title="OK资源网" target="_blank">OK资源网</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.runoob.com/" title="菜鸟教程" target="_blank">菜鸟教程</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM的内存结构"><span class="nav-number">1.</span> <span class="nav-text">JVM的内存结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动线程是start-还是run-？为什么"><span class="nav-number">2.</span> <span class="nav-text">启动线程是start()还是run()？为什么?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#继承Thread类的启动方式"><span class="nav-number">2.1.</span> <span class="nav-text">继承Thread类的启动方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现Runnable接口的启动方式"><span class="nav-number">2.2.</span> <span class="nav-text">实现Runnable接口的启动方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spring中Bean的作用域"><span class="nav-number">3.</span> <span class="nav-text">spring中Bean的作用域</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring框架中都用到了哪些设计模式？"><span class="nav-number">4.</span> <span class="nav-text">Spring框架中都用到了哪些设计模式？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#springmvc的核心是什么，请求的流程是怎么处理的，控制反转怎么实现的"><span class="nav-number">5.</span> <span class="nav-text">springmvc的核心是什么，请求的流程是怎么处理的，控制反转怎么实现的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#msyql优化经验"><span class="nav-number">6.</span> <span class="nav-text">msyql优化经验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要用线程池"><span class="nav-number">7.</span> <span class="nav-text">为什么要用线程池</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤器、监听器、拦截器的区别"><span class="nav-number">8.</span> <span class="nav-text">过滤器、监听器、拦截器的区别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤器"><span class="nav-number">8.1.</span> <span class="nav-text">过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#监听器"><span class="nav-number">8.2.</span> <span class="nav-text">监听器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拦截器"><span class="nav-number">8.3.</span> <span class="nav-text">拦截器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是线程死锁？死锁如何产生？如何避免线程死锁？"><span class="nav-number">9.</span> <span class="nav-text">什么是线程死锁？死锁如何产生？如何避免线程死锁？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rzh</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count"></span>
+  
+</div>
+<!--
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+-->
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_sphere.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
