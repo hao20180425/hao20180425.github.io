@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="-Java,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="1. 回文判断1234567891011121314151617181920212223242526272829303132333435363738394041424344454647  // 倒置字符串进行回文判断  static boolean isPalindrom1(String text) &amp;#123;      if(text == null)          return fals">
-<meta name="keywords" content="-Java">
+<meta name="description" content="算法1234567891011121314151617class Solution &amp;#123;     public int[] twoSum(int[] nums, int target) &amp;#123;                Map&amp;lt;Integer, Integer&amp;gt; map = new HashMap&amp;lt;&amp;gt;();         for (int i = 0;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaSE">
-<meta property="og:url" content="http://yoursite.com/2019/07/15/JavaSE/index.html">
+<meta property="og:title" content="乐扣">
+<meta property="og:url" content="http://yoursite.com/2019/07/18/乐扣/index.html">
 <meta property="og:site_name" content="R-博客">
-<meta property="og:description" content="1. 回文判断1234567891011121314151617181920212223242526272829303132333435363738394041424344454647  // 倒置字符串进行回文判断  static boolean isPalindrom1(String text) &amp;#123;      if(text == null)          return fals">
+<meta property="og:description" content="算法1234567891011121314151617class Solution &amp;#123;     public int[] twoSum(int[] nums, int target) &amp;#123;                Map&amp;lt;Integer, Integer&amp;gt; map = new HashMap&amp;lt;&amp;gt;();         for (int i = 0;">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-19T02:44:57.222Z">
+<meta property="og:updated_time" content="2019-07-18T09:56:52.903Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaSE">
-<meta name="twitter:description" content="1. 回文判断1234567891011121314151617181920212223242526272829303132333435363738394041424344454647  // 倒置字符串进行回文判断  static boolean isPalindrom1(String text) &amp;#123;      if(text == null)          return fals">
+<meta name="twitter:title" content="乐扣">
+<meta name="twitter:description" content="算法1234567891011121314151617class Solution &amp;#123;     public int[] twoSum(int[] nums, int target) &amp;#123;                Map&amp;lt;Integer, Integer&amp;gt; map = new HashMap&amp;lt;&amp;gt;();         for (int i = 0;">
 
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/15/JavaSE/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/18/乐扣/">
 
 
 
 
 
-  <title>JavaSE | R-博客</title>
+  <title>乐扣 | R-博客</title>
   
 
 
@@ -264,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/15/JavaSE/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/18/乐扣/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rzh">
@@ -281,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JavaSE</h1>
+          <h1 class="post-title" itemprop="name headline">乐扣</h1>
         
 
         <div class="post-meta">
@@ -293,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-15T15:53:48+08:00">
-                2019-07-15
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-18T17:12:58+08:00">
+                2019-07-18
               </time>
             
 
@@ -303,28 +302,6 @@
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/面试/" itemprop="url" rel="index">
-                    <span itemprop="name">面试</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -384,10 +361,11 @@
       
 
       
-        <h3 id="1-回文判断"><a href="#1-回文判断" class="headerlink" title="1. 回文判断"></a>1. 回文判断</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">  </span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 倒置字符串进行回文判断</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isPalindrom1</span><span class="params">(String text)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(text == <span class="keyword">null</span>)</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      <span class="keyword">if</span>(text.trim().equals(<span class="string">""</span>))</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      <span class="comment">// 将字符串倒置，判断是否与原字符串相等</span></span><br><span class="line">      <span class="keyword">char</span>[] chars = text.trim().toCharArray();</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// int 类型需要先转string,在转char[]</span></span><br><span class="line">   <span class="comment">// char[] charArray = String.valueOf(text).toCharArray();</span></span><br><span class="line">      </span><br><span class="line">      StringBuffer buffer = <span class="keyword">new</span> StringBuffer();</span><br><span class="line">      <span class="keyword">for</span> (<span class="keyword">int</span> i = chars.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">          buffer.append(chars[i]);</span><br><span class="line">      &#125;</span><br><span class="line">      String reversedText = buffer.toString();</span><br><span class="line">      <span class="keyword">return</span> reversedText.equals(text);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">     <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 判断指定字符串是否为回文</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@param</span> text 需要判断的字符串</span></span><br><span class="line"><span class="comment">   * <span class="doctag">@return</span> 是回文则返回true</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="function"><span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isPalindrom2</span><span class="params">(String text)</span> </span>&#123;</span><br><span class="line">      <span class="keyword">if</span>(text == <span class="keyword">null</span>)</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">      <span class="keyword">if</span>(text.trim().equals(<span class="string">""</span>))</span><br><span class="line">          <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">char</span>[] chars = text.trim().toCharArray();</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// int 类型需要先转string,在转char[]</span></span><br><span class="line">   <span class="comment">// char[] charArray = String.valueOf(text).toCharArray();</span></span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 回文的第i和第length-1-i是相等的</span></span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span> ; i &lt; chars.length/<span class="number">2</span> ; i++)&#123;</span><br><span class="line">          <span class="keyword">if</span>(chars[i] != chars[chars.length-<span class="number">1</span>-i])&#123;</span><br><span class="line">              <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123; </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span>[] twoSum(<span class="keyword">int</span>[] nums, <span class="keyword">int</span> target) &#123;</span><br><span class="line">        </span><br><span class="line">        Map&lt;Integer, Integer&gt; map = <span class="keyword">new</span> HashMap&lt;&gt;(); </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i++) &#123;</span><br><span class="line">            <span class="comment">// </span></span><br><span class="line">            <span class="keyword">int</span> complement = target - nums[i]; </span><br><span class="line">            <span class="keyword">if</span> (map.containsKey(complement)) &#123; </span><br><span class="line">                <span class="comment">// 当Map中包含 合适的数值,就返回这两个数的数组索引</span></span><br><span class="line">                <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">int</span>[] &#123; map.get(complement), i &#125;; </span><br><span class="line">            &#125; </span><br><span class="line">            <span class="comment">// 不存在就将当前索引的值, 和索引加入map</span></span><br><span class="line">            map.put(nums[i], i); </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"No two sum solution"</span>); </span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>2.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for singly-linked list.</span></span><br><span class="line"><span class="comment"> * public class ListNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     ListNode next;</span></span><br><span class="line"><span class="comment"> *     ListNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="comment">// [1]</span></span><br><span class="line">    <span class="comment">// [9,9,9]</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ListNode <span class="title">addTwoNumbers</span><span class="params">(ListNode l1, ListNode l2)</span> </span>&#123; </span><br><span class="line">    ListNode dummyHead = <span class="keyword">new</span> ListNode(<span class="number">0</span>); <span class="comment">// 创建新的链表[0]</span></span><br><span class="line">    ListNode current = dummyHead; <span class="comment">//再创建新的链表, 将[0]赋给current</span></span><br><span class="line">    <span class="keyword">int</span> carry = <span class="number">0</span>; <span class="comment">// 表示进位数值</span></span><br><span class="line">    <span class="keyword">while</span> (l1 != <span class="keyword">null</span> || l2 != <span class="keyword">null</span>) &#123; <span class="comment">// 两个链表当前节点值不为空的情况下操作</span></span><br><span class="line">        <span class="keyword">int</span> x = (l1 != <span class="keyword">null</span>) ? l1.val : <span class="number">0</span>; </span><br><span class="line">        <span class="keyword">int</span> y = (l2!= <span class="keyword">null</span>) ? l2.val : <span class="number">0</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> sum = carry + x + y; <span class="comment">// 两个链表节点值+进位值</span></span><br><span class="line">        carry = sum / <span class="number">10</span>; <span class="comment">// 取整数</span></span><br><span class="line">        <span class="keyword">int</span> val=sum % <span class="number">10</span>; <span class="comment">// 取余数</span></span><br><span class="line">        current.next = <span class="keyword">new</span> ListNode(val); <span class="comment">//将余数放入下一个节点</span></span><br><span class="line">        current = current.next; </span><br><span class="line">        <span class="keyword">if</span> (l1 != <span class="keyword">null</span>) l1 = l1.next;</span><br><span class="line">        <span class="keyword">if</span> (l2 != <span class="keyword">null</span>) l2 = l2.next; </span><br><span class="line">    &#125; <span class="keyword">if</span> (carry &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        current.next = <span class="keyword">new</span> ListNode(carry);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dummyHead.next;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<h1 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h1>
       
     </div>
     
@@ -426,12 +404,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"># -Java</a>
-          
-        </div>
-      
 
       
       
@@ -441,8 +413,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/15/Hexo/" rel="next" title="Hexo">
-                <i class="fa fa-chevron-left"></i> Hexo
+              <a href="/2019/07/16/SpringBoot微信点餐/" rel="next" title="SpringBoot微信点餐">
+                <i class="fa fa-chevron-left"></i> SpringBoot微信点餐
               </a>
             
           </div>
@@ -451,8 +423,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/07/15/面试整合/" rel="prev" title="面试整合">
-                面试整合 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/19/Redis/" rel="prev" title="Redis">
+                Redis <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -613,7 +585,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-回文判断"><span class="nav-number">1.</span> <span class="nav-text">1. 回文判断</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#算法"><span class="nav-number">1.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#SQL"><span class="nav-number">2.</span> <span class="nav-text">SQL</span></a></li></ol></div>
             
 
           </div>
